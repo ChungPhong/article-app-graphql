@@ -1,8 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import { connectDatabase } from "./config/database";
 import dotenv from "dotenv";
-import { ApolloServer, gql } from "apollo-server-express";
-import { Query } from "mongoose";
+import { ApolloServer } from "apollo-server-express";
+
 import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
 
