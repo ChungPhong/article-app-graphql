@@ -19,12 +19,26 @@ export const resolvers = {
   },
   Mutation: {
     createArticle: async (_, args) => {
-        const { article } = args;
+      const { article } = args;
 
-        const record = new Article(article);
-        await record.save();
-        
-        return record;
-    }
-  }
+      const record = new Article(article);
+      await record.save();
+
+      return record;
+    },
+    deleteArticle: async (_, args) => {
+      const { id } = args;
+
+      await Article.updateOne(
+        {
+          _id: id,
+        },
+        {
+          deleted: true,
+          deletedAt: new Date(),
+        }
+      );
+      return "ĐÃ XÓA!";
+    },
+  },
 };
