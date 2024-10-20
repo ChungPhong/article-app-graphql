@@ -5,16 +5,22 @@ export const resolversArticle = {
   //TẤT CẢ CÁC ĐOẠN CODE NÀY DÙNG ĐỂ VIẾT RA CÁC HÀM LẤY RA CÁC BÀI VIẾT
   Query: {
     getListArticle: async (_, args) => {
-      const { sortKey, sortValue } = args;
+      const { sortKey, sortValue, currentPage, limitItems } = args;
+      
       // Sắp xếp
       const sort = {};
       if (sortKey && sortValue) {
         sort[sortKey] = sortValue;
       }
       // Hết Sắp xếp
+
+       // Phân trang
+       const skip: number = (currentPage - 1) * limitItems;
+       // Hết Phân trang
+
       const articles = await Article.find({
         deleted: false,
-      }).sort(sort);
+      }).sort(sort).limit(limitItems).skip(skip);
       return articles;
     },
 
