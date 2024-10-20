@@ -27,6 +27,7 @@ export const typeDefs = gql`
     title: String
     avatar: String
     description: String
+    categoryId: String
   }
 
   input CategoryInput {
@@ -41,6 +42,6 @@ export const typeDefs = gql`
 
     createCategory(category: CategoryInput): Category
     updateCategory(id: String, category: CategoryInput): Category
-    deleteCategory(id: String): String,
+    deleteCategory(id: String): String
   }
 `;
