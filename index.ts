@@ -1,11 +1,10 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import { connectDatabase } from "./config/database";
 import dotenv from "dotenv";
 import { ApolloServer } from "apollo-server-express";
 
-import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs/index.typeDefs";
-
+import { resolvers } from "./resolvers/index.resolver";
 const startServer = async () => {
   dotenv.config();
   connectDatabase();
@@ -15,7 +14,7 @@ const startServer = async () => {
 
   const apolloServer = new ApolloServer({
     typeDefs: typeDefs,
-    resolvers,
+    resolvers: resolvers,
   });
 
   await apolloServer.start();

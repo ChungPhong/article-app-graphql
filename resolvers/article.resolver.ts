@@ -1,7 +1,7 @@
-import Article from "./models/article.model";
-import Category from "./models/category.model";
+import Article from "../models/article.model";
+import Category from "../models/category.model";
 
-export const resolvers = {
+export const resolversArticle = {
   //TẤT CẢ CÁC ĐOẠN CODE NÀY DÙNG ĐỂ VIẾT RA CÁC HÀM LẤY RA CÁC BÀI VIẾT
   Query: {
     getListArticle: async () => {
@@ -19,31 +19,17 @@ export const resolvers = {
       });
       return article;
     },
-    getListCategory: async () => {
-      const category = await Category.find({
-        deleted: false,
-      });
-      return category;
-    },
-    getCategory: async (_, args) => {
-      const { id } = args;
-      const category = await Category.findOne({
-        _id: id,
-        deleted: false,
-      });
-      return category;
-    },
   },
   Article: {
     category: async (article) => {
       const record = await Category.findOne({
         _id: article.categoryId,
-        deleted: false
+        deleted: false,
       });
       return record;
-    }
+    },
   },
-   //TẤT CẢ CÁC ĐOẠN CODE NÀY DÙNG ĐỂ THÊM SỬA XÓA
+  //TẤT CẢ CÁC ĐOẠN CODE NÀY DÙNG ĐỂ THÊM SỬA XÓA
   Mutation: {
     createArticle: async (_, args) => {
       const { article } = args;
@@ -82,41 +68,6 @@ export const resolvers = {
         deleted: false,
       });
       return newArticle;
-    },
-    createCategory: async (_, args) => {
-      const { category } = args;
-      const record = new Category(category);
-      await record.save();
-      return record;
-    },
-    updateCategory: async (_, args) => {
-      const { id, category } = args;
-      await Category.updateOne(
-        {
-          _id: id,
-          deleted: false,
-        },
-        category
-      );
-      const newCategory = await Category.findOne({
-        _id: id,
-        deleted: false,
-      });
-      return newCategory;
-    },
-    deleteCategory: async (_, args) => {
-      const { id } = args;
-
-      await Category.updateOne(
-        {
-          _id: id,
-        },
-        {
-          deleted: true,
-          deletedAt: new Date(),
-        }
-      );
-      return "ĐÃ XÓA!";
     },
   },
 };
