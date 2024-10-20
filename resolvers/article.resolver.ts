@@ -5,8 +5,15 @@ export const resolversArticle = {
   //TẤT CẢ CÁC ĐOẠN CODE NÀY DÙNG ĐỂ VIẾT RA CÁC HÀM LẤY RA CÁC BÀI VIẾT
   Query: {
     getListArticle: async (_, args) => {
-      const { sortKey, sortValue, currentPage, limitItems } = args;
-      
+      const {
+        sortKey,
+        sortValue,
+        currentPage,
+        limitItems,
+        filterKey,
+        filterValue,
+      } = args;
+
       // Sắp xếp
       const sort = {};
       if (sortKey && sortValue) {
@@ -14,13 +21,22 @@ export const resolversArticle = {
       }
       // Hết Sắp xếp
 
-       // Phân trang
-       const skip: number = (currentPage - 1) * limitItems;
-       // Hết Phân trang
+      // Phân trang
+      const skip: number = (currentPage - 1) * limitItems;
+      // Hết Phân trang
 
-      const articles = await Article.find({
+      // Bộ Lọc
+      const find = {
         deleted: false,
-      }).sort(sort).limit(limitItems).skip(skip);
+      };
+      if (filterKey && filterValue) {
+        find[filterKey] = filterValue;
+      }
+      // Hết Bộ Lọc
+      const articles = await Article.find(find)
+        .sort(sort)
+        .limit(limitItems)
+        .skip(skip);
       return articles;
     },
 
