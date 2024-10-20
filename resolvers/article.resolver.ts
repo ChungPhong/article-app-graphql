@@ -12,7 +12,12 @@ export const resolversArticle = {
         limitItems,
         filterKey,
         filterValue,
+        keyword,
       } = args;
+
+      const find = {
+        deleted: false,
+      };
 
       // Sắp xếp
       const sort = {};
@@ -26,13 +31,18 @@ export const resolversArticle = {
       // Hết Phân trang
 
       // Bộ Lọc
-      const find = {
-        deleted: false,
-      };
       if (filterKey && filterValue) {
         find[filterKey] = filterValue;
       }
       // Hết Bộ Lọc
+
+      // Tìm kiếm
+      if (keyword) {
+        const regex = new RegExp(keyword, "i");
+        find["title"] = regex;
+      }
+      // Hết Tìm kiếm
+
       const articles = await Article.find(find)
         .sort(sort)
         .limit(limitItems)
