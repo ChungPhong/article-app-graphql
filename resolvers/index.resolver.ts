@@ -1,6 +1,4 @@
 import { resolversArticle } from "./article.resolver";
 import { resolversCategory } from "./category.resolver";
-export const resolvers = [
-  resolversArticle,
-  resolversCategory
-];
+import { resolversUser } from "./user.resolver";
+export const resolvers = [resolversArticle, resolversCategory, resolversUser];
