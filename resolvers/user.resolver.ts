@@ -2,37 +2,29 @@ import { generateRandomString } from "../helpers/generate.helper";
 import User from "../models/user.model";
 import md5 from "md5";
 export const resolversUser = {
-
   Query: {
-    getUser: async (_, args) => {
-      try {
-        const { id } = args;
-        const user = await User.findOne({
-          _id: id,
-          deleted: false
-        });
-        if(user) {
-          return {
-            code: 200,
-            message: "Lấy thông tin thành công!",
-            id: user.id,
-            fullName: user.fullName,
-            email: user.email,
-            token: user.token,
-          }
-        } else {
-          return {
-            code: 400,
-            message: "Id không tồn tại!"
-          }
-        }
-      } catch (error) {
+    getUser: async (_, args, context) => {
+      const infoUser = await User.findOne({
+        token: context["user"].token,
+        deleted: false,
+      });
+
+      if (infoUser) {
+        return {
+          code: 200,
+          message: "Thành công!",
+          id: infoUser.id,
+          fullName: infoUser.fullName,
+          email: infoUser.email,
+          token: infoUser.token,
+        };
+      } else {
         return {
           code: 400,
-          message: "Id không đúng định dạng!"
-        }
+          message: "Thất bại!",
+        };
       }
-    }
+    },
   },
 
   Mutation: {
