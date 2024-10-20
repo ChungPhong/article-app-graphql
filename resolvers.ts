@@ -2,6 +2,7 @@ import Article from "./models/article.model";
 import Category from "./models/category.model";
 
 export const resolvers = {
+  //TẤT CẢ CÁC ĐOẠN CODE NÀY DÙNG ĐỂ VIẾT RA CÁC HÀM LẤY RA CÁC BÀI VIẾT
   Query: {
     getListArticle: async () => {
       const articles = await Article.find({
@@ -33,7 +34,16 @@ export const resolvers = {
       return category;
     },
   },
-
+  Article: {
+    category: async (article) => {
+      const record = await Category.findOne({
+        _id: article.categoryId,
+        deleted: false
+      });
+      return record;
+    }
+  },
+   //TẤT CẢ CÁC ĐOẠN CODE NÀY DÙNG ĐỂ THÊM SỬA XÓA
   Mutation: {
     createArticle: async (_, args) => {
       const { article } = args;
